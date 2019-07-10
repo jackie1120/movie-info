@@ -1,5 +1,5 @@
 import axios from 'axios'
 
-export default () => {
-  return axios.create()
-}
+const request = axios.create()
+
+export default request

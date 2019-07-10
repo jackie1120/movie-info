@@ -32,16 +32,16 @@
 </template>
 
 <script>
-import Api from '@/services/Api'
+import UserService from '@/services/UserService'
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
   methods: {
-    test () {
-      console.log(process.env)
-      Api().get('/api').then(res => console.log(res.data))
+    async test () {
+      const user = await UserService.getUserById(2)
+      console.log(user)
     }
   }
 }
