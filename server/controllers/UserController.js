@@ -1,11 +1,19 @@
 const { User } = require('../models')
+const Jwt = require('jsonwebtoken')
+const { token } = require('../config/config')
+
+function tokenSign ({ id, email }) {
+  let tokenString = Jwt.sign({ id, email }, token.secretOrPrivateKey, token.options)
+  return tokenString
+}
 
 module.exports = {
   async register (req, res) {
     try {
       const user = await User.create(req.body)
       res.send({
-        user: user.toJSON()
+        user: user.toJSON(),
+        token: tokenSign(user.toJSON())
       })
     } catch (err) {
       res.status(400).send({
@@ -69,7 +77,8 @@ module.exports = {
     let isValidPassword = user.comparePassword(req.body.password)
     if (isValidPassword) {
       res.send({
-        user: user.toJSON()
+        user: user.toJSON(),
+        token: tokenSign(user.toJSON())
       })
     } else {
       res.status(403).send({

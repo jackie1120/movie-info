@@ -16,7 +16,9 @@ module.exports = {
     }
   },
   token: {
-    secret: 'movie',
-    expireIn: '24h'
+    secretOrPrivateKey: 'movie',
+    options: {
+      expiresIn: '24h'
+    }
   }
 }
