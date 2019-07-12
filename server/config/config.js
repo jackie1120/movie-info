@@ -14,5 +14,9 @@ module.exports = {
         underscored: true
       }
     }
+  },
+  token: {
+    secret: 'movie',
+    expireIn: '24h'
   }
 }

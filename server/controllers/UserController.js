@@ -42,14 +42,13 @@ module.exports = {
   },
   async update (req, res) {
     try {
-      const user = await User.update(
+      await User.update(
         req.body,
         {
           where: {
             id: req.params.id
           }
         })
-      console.log(user)
       res.send({
         message: '数据更新成功'
       })
@@ -58,6 +57,24 @@ module.exports = {
       res.status(500).send({
         code: 500,
         error: '数据更新失败'
+      })
+    }
+  },
+  async login (req, res) {
+    const user = await User.findOne({
+      where: {
+        email: req.body.email
+      }
+    })
+    let isValidPassword = user.comparePassword(req.body.password)
+    if (isValidPassword) {
+      res.send({
+        user: user.toJSON()
+      })
+    } else {
+      res.status(403).send({
+        code: 403,
+        error: '用户名或密码错误'
       })
     }
   }
