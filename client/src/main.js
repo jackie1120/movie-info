@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import 'normalize.css/normalize.css'
 import ElementUI from 'element-ui'
-import './styles.scss'
+import './styles/index.scss'
 
 Vue.use(ElementUI)
 
