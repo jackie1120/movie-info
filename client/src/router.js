@@ -22,7 +22,12 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: () => import( './views/login/index')
+      component: () => import('./views/user/login')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () => import('./views/user/register')
     }
   ]
 })
