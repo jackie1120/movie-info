@@ -8,6 +8,7 @@
       :model="registerForm"
       v-bind:rules="registerRules"
     >
+      <div class="register-error text-danger" v-html="error"></div>
       <el-form-item prop="email" label="E-mail">
         <el-input v-model="registerForm.email"></el-input>
       </el-form-item>
@@ -26,10 +27,13 @@
 </template>
 
 <script>
+import UserService from '../../services/UserService'
+
 export default {
   data () {
     return {
       loading: false,
+      error: '',
       registerForm: {
         email: '',
         password: '',
@@ -37,7 +41,7 @@ export default {
       },
       registerRules: {
         email: {
-          type: 'email',
+          // type: 'email',
           required: true,
           message: '请输入有效的邮箱地址'
         },
@@ -65,12 +69,27 @@ export default {
   },
   methods: {
     register () {
-      console.log(this.$refs['registerForm'])
-      this.$refs['registerForm'].validate((valid) => {
+      this.$refs['registerForm'].validate(async (valid) => {
         console.log(valid)
         if (valid) {
           this.loading = true
-          // TODO: 调用注册接口
+          this.error = ''
+          try {
+            const response = await UserService.register({
+              email: this.registerForm.email,
+              password: this.registerForm.password
+            })
+            if (response.data.code === 200) {
+              this.$store.dispatch('setUser', response.data.user)
+              this.$store.dispatch('setToken', response.data.token)
+              this.$router.push('/')
+            }
+          } catch (error) {
+            if (error.response.data.error) {
+              this.error = error.response.data.error
+            }
+          }
+          this.loading = false
         }
       })
     }

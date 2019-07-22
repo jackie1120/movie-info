@@ -7,6 +7,7 @@
       :rules="loginRules"
       :model="loginForm"
     >
+      <div class="login-error text-danger">{{ error }}</div>
       <el-form-item prop="email" label="E-mail">
         <el-input
           placeholder="E-mail"
@@ -23,6 +24,7 @@
       </el-form-item>
       <el-button
         type="primary"
+        native-type="submit"
         style="width: 100%"
         :loading="loading"
         @click="login"
@@ -35,9 +37,13 @@
 </template>
 
 <script>
+import UserService from '../../services/UserService'
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
+      error: '',
       loginForm: {
         email: '',
         password: ''
@@ -50,11 +56,28 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setUser',
+      'setToken'
+    ]),
     login () {
-      this.$refs['loginForm'].validate((valid) => {
+      this.$refs['loginForm'].validate(async (valid) => {
         if (valid) {
           this.loading = true
-          // TODO: 调用登陆接口
+          this.error = ''
+          try {
+            const response = await UserService.login(this.loginForm)
+            if (response.data.code === 200) {
+              this.setUser(response.data.user)
+              this.setToken(response.data.token)
+              this.$router.push('/')
+            }
+          } catch (error) {
+            if (error.response.data.error) {
+              this.error = error.response.data.error
+            }
+          }
+          this.loading = false
         }
       })
     }
@@ -80,6 +103,9 @@ export default {
       font-size: 0.9rem;
       margin-top: 10px;
       color: #909399
+    }
+    .login-error {
+      margin: 5px 0;
     }
   }
 }
