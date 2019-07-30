@@ -1,4 +1,5 @@
 const UserController = require('./controllers/UserController')
+const MovieController = require('./controllers/MovieController')
 const AuthenticatePolicy = require('./policies/AuthenticatePolicy')
 
 module.exports = (app) => {
@@ -14,6 +15,16 @@ module.exports = (app) => {
     AuthenticatePolicy.isValidToken,
     UserController.getUserById
   )
-
   app.post('/users/login', UserController.login)
+
+  app.post('/movies',
+    // AuthenticatePolicy.isValidToken,
+    MovieController.create
+  )
+  app.get('/movies', MovieController.getAll)
+  app.get('/movies/:id', MovieController.getById)
+  app.delete('/movies/:id',
+    // AuthenticatePolicy.isValidToken,
+    MovieController.delete
+  )
 }

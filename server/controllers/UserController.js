@@ -17,8 +17,9 @@ module.exports = {
         token: tokenSign(user.toJSON())
       })
     } catch (err) {
+      console.log(err.message)
       let error = []
-      console.log(err)
+      // console.log(err)
       if (err.errors) {
         err.errors.forEach(validateError => {
           error.push(validateError.message)

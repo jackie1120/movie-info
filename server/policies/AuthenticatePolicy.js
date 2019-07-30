@@ -24,7 +24,7 @@ module.exports = {
       }
     } catch (error) {
       res.status(401).send({
-        error: '请登陆后再访问'
+        error: '请登陆后再执行该操作'
       })
     }
   }
