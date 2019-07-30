@@ -5,6 +5,7 @@ import store from './store'
 import 'normalize.css/normalize.css'
 import ElementUI from 'element-ui'
 import './styles/index.scss'
+import './components'
 
 Vue.use(ElementUI)
 
