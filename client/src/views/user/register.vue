@@ -70,7 +70,6 @@ export default {
   methods: {
     register () {
       this.$refs['registerForm'].validate(async (valid) => {
-        console.log(valid)
         if (valid) {
           this.loading = true
           this.error = ''
@@ -82,7 +81,7 @@ export default {
             if (response.data.code === 200) {
               this.$store.dispatch('setUser', response.data.user)
               this.$store.dispatch('setToken', response.data.token)
-              this.$router.push('/')
+              // this.$router.push('/')
             }
           } catch (error) {
             if (error.response.data.error) {

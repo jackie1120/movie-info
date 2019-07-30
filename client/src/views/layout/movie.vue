@@ -1,0 +1,46 @@
+<template>
+  <el-container>
+    <el-header height="50px" class="bg-primary">
+      <div class="header">
+        <h1>Vue+Element+Express</h1>
+        <div>
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link text-white"><i class="el-icon-s-tools">设置</i></span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="login">登陆</el-dropdown-item>
+              <el-dropdown-item command="movie-create">新增电影</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </div>
+    </el-header>
+    <router-view class="container"></router-view>
+  </el-container>
+</template>
+
+<script>
+export default {
+  methods: {
+    handleCommand (route) {
+      this.$router.push({ name: route })
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.header {
+  display: flex;
+  align-items: center;
+  color: white;
+  h1 {
+    margin: 2px 0;
+    margin-right: auto;
+  }
+}
+.container {
+  width: 960px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+</style>

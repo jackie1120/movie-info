@@ -1,16 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
+    // {
+    //   path: '/',
+    //   name: 'home',
+    //   component: Home
+    // },
     {
       path: '/about',
       name: 'about',
@@ -30,6 +29,28 @@ export default new Router({
       alias: '/register',
       name: 'register',
       component: () => import('./views/user/register')
+    },
+    {
+      path: '/movie',
+      component: () => import('./views/layout/movie'),
+      children: [
+        {
+          path: 'list',
+          name: 'movie-list',
+          component: () => import('./views/movie/list')
+        },
+        {
+          path: 'create',
+          name: 'movie-create',
+          component: () => import('./views/movie/create')
+        }
+      ]
+    },
+    {
+      path: '/',
+      alias: '*',
+      name: 'main',
+      component: () => import('./views/main')
     }
   ]
 })
