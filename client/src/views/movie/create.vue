@@ -28,10 +28,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="24" style="text-align:center">
-          <el-button 
+          <el-button
             :loading="loading"
-            type="primary" 
-            native-type="submit" 
+            type="primary"
+            native-type="submit"
             @click.prevent="submit('movie-form')"
           >
             保存
@@ -60,16 +60,16 @@ export default {
         genre: { required: true, message: '请输入电影类别', trigger: true },
         poster: { required: true, message: '请输入电影海报', trigger: true },
         description: { required: true, message: '请输入电影简介', trigger: true },
-        rating: { required: true, message: '请输入电影评分', trigger: true },
+        rating: { required: true, message: '请输入电影评分', trigger: true }
       }
     }
   },
   methods: {
-    submit(formName) {
+    submit (formName) {
       this.loading = true
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          //TODO: 调用后台接口存储数据，而后跳转到列表页面
+          // TODO: 调用后台接口存储数据，而后跳转到列表页面
           this.$message({
             dangerouslyUseHTMLString: true,
             message: '信息保存成功!<br/><br/>页面将在两秒后自动跳转到信息列表页',
@@ -85,7 +85,7 @@ export default {
         }
       })
     },
-    reset(formName) {
+    reset (formName) {
       this.$refs[formName].resetFields()
     }
   }
