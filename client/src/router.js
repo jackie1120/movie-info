@@ -40,6 +40,11 @@ export default new Router({
           component: () => import('./views/movie/list')
         },
         {
+          path: 'detail/:id',
+          name: 'movie-detail',
+          component: () => import('./views/movie/detail')
+        },
+        {
           path: 'create',
           name: 'movie-create',
           component: () => import('./views/movie/create')
