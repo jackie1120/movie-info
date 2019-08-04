@@ -5,6 +5,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 const request = axios.create({
+  baseURL: '/api',
   headers: {
     showLoading: true
   }
