@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     token: '',
-    user: null,
+    user: Object,
     isUserLogin: false,
     loadingService: null
   },
@@ -15,6 +16,8 @@ const store = new Vuex.Store({
       state.token = token
       if (token) {
         state.isUserLogin = true
+      } else {
+        state.isUserLogin = false
       }
     },
     setUser (state, user) {
@@ -34,7 +37,10 @@ const store = new Vuex.Store({
     setLoadingService ({ commit }, service) {
       commit('setLoadingService', service)
     }
-  }
+  },
+  plugins: [createPersistedState({
+    paths: ['token', 'user', 'isUserLogin']
+  })]
 })
 
 export default store

@@ -7,6 +7,12 @@
         <label>动作</label>
         <label>剧情</label>
       </div>
+       <div
+        style="margin-left: auto; cursor: pointer"
+        @click="$router.push({name: 'movie-create'})"
+        v-if="$store.state.isUserLogin">
+        <i class="el-icon-plus"></i> 新增电影
+      </div>
     </template>
     <div class="movie-list">
       <a class="movie-item" v-for="movie in movies" :key="movie.id" @click="$router.push({name: 'movie-detail', params: {id: movie.id}})">
@@ -18,27 +24,25 @@
 </template>
 
 <script>
+import MovieService from '../../services/MovieService'
+
 export default {
   data () {
     return {
       movies: []
     }
   },
-  created () {
-    this.movies = [
-      {
-        id: 1,
-        name: '哪吒之魔童降世',
-        poster: 'http://imge.gmw.cn/attachement/jpg/site2/20190725/005056a5c18d1ea3629b18.jpg',
-        rating: 8.6
-      },
-      {
-        id: 2,
-        name: '绿皮书',
-        poster: 'http://n.sinaimg.cn/translate/749/w450h299/20190222/w9VE-htknpmh2184101.jpg',
-        rating: 8.6
+  async created () {
+    try {
+      const response = await MovieService.getAll()
+      this.movies = response.data.movies
+    } catch (error) {
+      if (error.response.data.error) {
+        this.$message.error(error.response.data.error)
+      } else {
+        this.$message.error(`[${error.response.status}]，数据处理异常请稍后再试`)
       }
-    ]
+    }
   }
 }
 </script>

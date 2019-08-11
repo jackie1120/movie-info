@@ -23,6 +23,26 @@ module.exports = {
       })
     }
   },
+  async update (req, res) {
+    try {
+      await Movie.update(
+        req.body,
+        {
+          where: {
+            id: req.params.id
+          }
+        })
+      res.send({
+        message: '数据更新成功'
+      })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({
+        code: 500,
+        error: '数据更新失败'
+      })
+    }
+  },
   async getAll (req, res) {
     try {
       const movies = await Movie.findAll()

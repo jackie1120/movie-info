@@ -28,6 +28,7 @@
 
 <script>
 import UserService from '../../services/UserService'
+// import { constants } from 'crypto'
 
 export default {
   data () {
@@ -81,14 +82,17 @@ export default {
             if (response.data.code === 200) {
               this.$store.dispatch('setUser', response.data.user)
               this.$store.dispatch('setToken', response.data.token)
-              // this.$router.push('/')
+              this.$router.push('/')
             }
           } catch (error) {
             if (error.response.data.error) {
               this.error = error.response.data.error
+            } else {
+              this.error = `[${error.response.status}]，数据处理异常请稍后再试`
             }
+          } finally {
+            this.loading = false
           }
-          this.loading = false
         }
       })
     }

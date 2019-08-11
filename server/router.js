@@ -18,13 +18,17 @@ module.exports = (app) => {
   app.post('/users/login', UserController.login)
 
   app.post('/movies',
-    // AuthenticatePolicy.isValidToken,
+    AuthenticatePolicy.isValidToken,
     MovieController.create
   )
   app.get('/movies', MovieController.getAll)
   app.get('/movies/:id', MovieController.getById)
+  app.put('/movies/:id',
+    AuthenticatePolicy.isValidToken,
+    MovieController.update
+  )
   app.delete('/movies/:id',
-    // AuthenticatePolicy.isValidToken,
+    AuthenticatePolicy.isValidToken,
     MovieController.delete
   )
 }

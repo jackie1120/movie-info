@@ -4,10 +4,14 @@
       <div class="header">
         <h1>Vue+Element+Express</h1>
         <div>
-          <el-dropdown @command="handleCommand">
+          <template v-if="!$store.state.isUserLogin">
+            <span @click="$router.push({name: 'login'})">登录</span>&nbsp;|
+            <span @click="$router.push({name: 'register'})">注册</span>
+          </template>
+          <el-dropdown @command="handleCommand" v-else>
             <span class="el-dropdown-link text-white"><i class="el-icon-s-tools">设置</i></span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="login">登陆</el-dropdown-item>
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
               <el-dropdown-item command="movie-create">新增电影</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -19,10 +23,25 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   methods: {
+    ...mapActions([
+      'setUser',
+      'setToken'
+    ]),
     handleCommand (route) {
-      this.$router.push({ name: route })
+      if (route === 'logout') {
+        this.logout()
+      } else {
+        this.$router.push({ name: route })
+      }
+    },
+    logout () {
+      this.setUser(null)
+      this.setToken('')
+      this.$router.push({ name: 'movie-list' })
     }
   }
 }
@@ -36,6 +55,9 @@ export default {
   h1 {
     margin: 2px 0;
     margin-right: auto;
+  }
+  span {
+    cursor: pointer;
   }
 }
 .container {

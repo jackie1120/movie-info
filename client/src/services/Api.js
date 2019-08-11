@@ -6,7 +6,8 @@ import 'nprogress/nprogress.css'
 
 const request = axios.create({
   headers: {
-    showLoading: true
+    showLoading: true,
+    Authorization: `Bearer ${store.state.token}`
   }
 })
 NProgress.configure({ showSpinner: false })

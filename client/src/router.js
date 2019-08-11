@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from './store'
+import { Notification } from 'element-ui'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     // {
     //   path: '/',
@@ -47,7 +49,9 @@ export default new Router({
         {
           path: 'create',
           name: 'movie-create',
-          component: () => import('./views/movie/create')
+          alias: 'edit',
+          component: () => import('./views/movie/create'),
+          meta: { auth: true }
         }
       ]
     },
@@ -55,7 +59,28 @@ export default new Router({
       path: '/',
       alias: '*',
       name: 'main',
-      component: () => import('./views/main')
+      redirect: { name: 'movie-list' }
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((router) => router.meta.auth)) {
+    if (store.state.isUserLogin) {
+      next()
+    } else {
+      Notification({
+        title: '提示',
+        type: 'warning',
+        message: '请登录后再访问该页面'
+      })
+      next({
+        name: 'login',
+        query: { redirect: to.fullPath }
+      })
+    }
+  } else {
+    next()
+  }
+})
+
+export default router

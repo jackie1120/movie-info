@@ -27,7 +27,7 @@
         native-type="submit"
         style="width: 100%"
         :loading="loading"
-        @click="login"
+        @click.prevent="login"
       >登陆</el-button>
       <div class="login-info">
         <span>如果还没有账号请<router-link :to="{ name: 'register' }">点击注册</router-link></span>
@@ -70,14 +70,21 @@ export default {
             if (response.data.code === 200) {
               this.setUser(response.data.user)
               this.setToken(response.data.token)
-              this.$router.push('/')
+              if (this.$route.query.redirect) {
+                this.$router.push(this.$route.query.redirect)
+              } else {
+                this.$router.push('/')
+              }
             }
           } catch (error) {
-            if (error.response.data.error) {
+            if (typeof error.response !== 'undefined' && error.response.data.error) {
               this.error = error.response.data.error
+            } else {
+              this.error = `[${error.response.status}]，数据处理异常请稍后再试`
             }
+          } finally {
+            this.loading = false
           }
-          this.loading = false
         }
       })
     }
