@@ -31,4 +31,10 @@ module.exports = (app) => {
     AuthenticatePolicy.isValidToken,
     MovieController.delete
   )
+  app.get('*', (req, res) => {
+    res.send({
+      code: 200,
+      msg: '欢饮使用后台接口服务，具体请求地址请参考文档'
+    })
+  })
 }

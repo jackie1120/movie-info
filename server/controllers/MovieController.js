@@ -1,4 +1,4 @@
-const { Movie } = require('../models')
+const { Movie, Sequelize } = require('../models')
 
 module.exports = {
   async create (req, res) {
@@ -44,8 +44,24 @@ module.exports = {
     }
   },
   async getAll (req, res) {
+    const Op = Sequelize.Op
+    const operators = {}
+    if (req.query.genre) {
+      const filter = {
+        where: {
+          genre: { [Op.like]: `%${req.query.genre}%` }
+        }
+      }
+      Object.assign(operators, filter)
+    }
+    if (req.query.orderby === 'latest') {
+      Object.assign(operators, { order: [['updatedAt', 'DESC']] })
+    }
+    if (req.query.orderby === 'rating') {
+      Object.assign(operators, { order: [['rating', 'DESC']] })
+    }
     try {
-      const movies = await Movie.findAll()
+      const movies = await Movie.findAll(operators)
       res.send({
         code: 200,
         movies: movies
